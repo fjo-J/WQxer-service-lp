@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XQxer - そのアイデア、2週間で「触れる未来」に。</title>
+    <!-- Tailwind CSS CDN --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font Family --><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=M+PLUS+1p:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* M PLUS 1pフォントをTailwindのfont-sansに適用 */
+        body {
+            font-family: 'M PLUS 1p', 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* カスタムカラー */
+        .bg-dark-navy { background-color: #0A0F1F; }
+        .text-cyber-purple { color: #9F55FF; }
+        .text-electric-blue { color: #00D1FF; }
+        
+        /* グラデーションテキスト */
+        .text-gradient {
+            background: linear-gradient(to right, #9F55FF, #00D1FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        /* グラスモーフィズム */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05); /* 半透明の背景 */
+            backdrop-filter: blur(12px); /* ぼかし効果 */
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); /* 細い境界線 */
+            border-radius: 1.25rem; /* rounded-2xl */
+        }
+        
+        /* ヒーローの背景アニメーション（簡易版） */
+        @keyframes subtle-pan {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10px, 5px) scale(1.02); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        .hero-bg-graphic {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(145deg, rgba(159, 85, 255, 0.2), rgba(0, 209, 255, 0.1));
+            filter: blur(100px);
+            border-radius: 50%;
+            animation: subtle-pan 15s ease-in-out infinite alternate;
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        /* スクロール連動アニメーション（簡易） */
+        /* 本来はJSで実装しますが、ここではCSSのscroll-behaviorでスムーズにします */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* FAQアコーディオンの開閉用 */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-dark-navy text-gray-200 overflow-x-hidden">
+
+    <!-- ===== ヘッダー ===== --><header class="fixed top-0 left-0 right-0 z-50 glass-card mx-4 md:mx-8 lg:mx-auto lg:max-w-6xl mt-4 rounded-full">
+        <nav class="flex items-center justify-between px-6 py-3">
+            <!-- ロゴ --><a href="#" class="flex items-center space-x-2">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0" y1="0" x2="36" y2="36">
+                            <stop offset="0%" stop-color="#9F55FF"/>
+                            <stop offset="100%" stop-color="#00D1FF"/>
+                        </linearGradient>
+                        <linearGradient id="logoGrad2" x1="5" y1="5" x2="30" y2="30">
+                            <stop offset="0%" stop-color="#00D1FF"/>
+                            <stop offset="100%" stop-color="#9F55FF"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- 外側のX形状 --><path d="M4 4L32 32M4 32L32 4" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round"/>
+                    <!-- 中央のQ形状をイメージした円弧と線 --><circle cx="18" cy="18" r="10" stroke="url(#logoGrad2)" stroke-width="2"/>
+                    <path d="M24 24L26 26" stroke="url(#logoGrad2)" stroke-width="2" stroke-linecap="round"/>
+                    <!-- 内部のグリッド/接続点のような要素 --><path d="M18 8V28M8 18H28" stroke="url(#logoGrad2)" stroke-width="1" stroke-dasharray="2 2" opacity="0.7"/>
+                </svg>
+                <span class="font-bold text-2xl text-white tracking-wider">XQxer</span>
+            </a>
+            
+            <!-- ナビゲーション (PC) --><div class="hidden md:flex items-center space-x-8">
+                <a href="#solution" class="hover:text-electric-blue transition-colors">強み</a>
+                <a href="#works" class="hover:text-electric-blue transition-colors">制作実績</a>
+                <a href="#flow" class="hover:text-electric-blue transition-colors">ご利用の流れ</a>
+                <a href="#faq" class="hover:text-electric-blue transition-colors">FAQ</a>
+                <a href="#contact" class="px-5 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all shadow-lg shadow-purple-500/30">
+                    無料で相談する
+                </a>
+            </div>
+
+            <!-- ハンバーガーメニュー (Mobile) --><div class="md:hidden">
+                <button id="mobile-menu-button" class="text-white p-2 rounded-md">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- モバイルメニュー (開閉) --><div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col space-y-4">
+            <a href="#solution" class="hover:text-electric-blue transition-colors block">強み</a>
+            <a href="#works" class="hover:text-electric-blue transition-colors block">制作実績</a>
+            <a href="#flow" class="hover:text-electric-blue transition-colors block">ご利用の流れ</a>
+            <a href="#faq" class="hover:text-electric-blue transition-colors block">FAQ</a>
+            <a href="#contact" class="block text-center w-full px-5 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all shadow-lg shadow-purple-500/30">
+                無料で相談する
+            </a>
+        </div>
+    </header>
+
+    <!-- ===== メインコンテンツ ===== --><main class="relative overflow-hidden">
+
+        <!-- ===== 1. ファーストビュー ===== --><section class="relative h-screen min-h-[700px] flex items-center justify-center text-center px-4 pt-24">
+            <!-- 背景グラフィック --><div class="hero-bg-graphic top-1/4 left-1/4"></div>
+            <div class="hero-bg-graphic bottom-1/4 right-1/4" style="animation-delay: -5s; background: linear-gradient(145deg, rgba(0, 209, 255, 0.2), rgba(159, 85, 255, 0.1));"></div>
+
+            <div class="relative z-10 flex flex-col items-center">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6">
+                    そのアイデア、<br>
+                    <span class="text-gradient">2週間で「触れる未来」</span>に。
+                </h1>
+                <p class="max-w-2xl text-lg md:text-xl text-gray-300 mb-10">
+                    XQxerは、あなたの漠然としたイメージを、<br class="hidden sm:block">
+                    世界を動かすUI/UXデザインへと昇華させるプロフェッショナル集団です。
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                    <a href="#contact" class="px-8 py-4 rounded-full text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all transform hover:scale-105 shadow-2xl shadow-purple-500/40">
+                        まずは無料で相談してみる
+                    </a>
+                    <a href="#" class="px-8 py-4 rounded-full text-lg font-bold text-white glass-card border-none hover:bg-white/10 transition-all transform hover:scale-105">
+                        資料ダウンロード
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 2. 課題提起 ===== --><section id="problem" class="py-20 md:py-32 px-4">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">
+                    こんな “<span class="text-gradient">アイデアの迷子</span>” に<br class="sm:hidden">なっていませんか？
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- 課題カード 1 --><div class="glass-card p-8 flex flex-col items-center text-center">
+                        <div class="p-4 bg-gradient-to-br from-purple-600 to-blue-500 rounded-full mb-6 shadow-lg">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M12 21v-1m0-8c-2.21 0-4 1.79-4 4h8c0-2.21-1.79-4-4-4z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">形にできない</h3>
+                        <p class="text-gray-300">「頭の中にはあるのに、どう伝えたらいいか分からない…」</p>
+                    </div>
+                    <!-- 課題カード 2 --><div class="glass-card p-8 flex flex-col items-center text-center">
+                        <div class="p-4 bg-gradient-to-br from-purple-600 to-blue-500 rounded-full mb-6 shadow-lg">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">人がいない</h3>
+                        <p class="text-gray-300">「社内にデザイナーがおらず、プロジェクトが前に進まない…」</p>
+                    </div>
+                    <!-- 課題カード 3 --><div class="glass-card p-8 flex flex-col items-center text-center">
+                        <div class="p-4 bg-gradient-to-br from-purple-600 to-blue-500 rounded-full mb-6 shadow-lg">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">物足りない</h3>
+                        <p class="text-gray-300">「今の外注先では、スピードもデザインの質も物足りない…」</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 3. ソリューション & 強み ===== --><section id="solution" class="py-20 md:py-32 px-4 relative overflow-hidden">
+            <div class="max-w-6xl mx-auto relative z-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">
+                    <span class="text-gradient">XQxer</span>が、そのすべてを解決します。
+                </h2>
+                <p class="text-lg text-gray-300 text-center max-w-2xl mx-auto mb-20">
+                    私たちはただのデザイン会社ではありません。
+                    あなたのビジネスを成功に導く、UI/UX戦略パートナーです。
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- 強みカード 1 --><div class="glass-card p-8 rounded-2xl border-purple-500/30 border">
+                        <h3 class="text-gradient text-6xl font-extrabold mb-4">2<span class="text-3xl ml-2">weeks</span></h3>
+                        <h4 class="text-2xl font-bold text-white mb-3">圧倒的スピード</h4>
+                        <p class="text-gray-300">最短2週間でハイクオリティなUIデザイン（Figma）をご提案。高速なPDCAを実現します。</p>
+                    </div>
+
+                    <!-- 強みカード 2 --><div class="glass-card p-8 rounded-2xl border-blue-500/30 border">
+                        <h3 class="text-gradient text-6xl font-extrabold mb-4">0<span class="text-3xl ml-1">to</span>1</h3>
+                        <h4 class="text-2xl font-bold text-white mb-3">0→1ヒアリング</h4>
+                        <p class="text-gray-300">雑談レベルのアイデアからでも本質を捉えます。具体的なデザインカンプは不要です。</p>
+                    </div>
+
+                    <!-- 強みカード 3 --><div class="glass-card p-8 rounded-2xl border-purple-500/30 border">
+                        <h3 class="text-gradient text-6xl font-extrabold mb-4">All<span class="text-3xl ml-2">in One</span></h3>
+                        <h4 class="text-2xl font-bold text-white mb-3">ワンストップ開発</h4>
+                        <p class="text-gray-300">UIデザインからシステム開発、インフラ構築まで。すべてお任せください。</p>
+                    </div>
+                    
+                    <!-- 強みカード 4 --><div class="glass-card p-8 rounded-2xl border-blue-500/30 border">
+                        <h3 class="text-gradient text-6xl font-extrabold mb-4">Flex<span class="text-3xl ml-2">ible</span></h3>
+                        <h4 class="text-2xl font-bold text-white mb-3">柔軟な予算</h4>
+                        <p class="text-gray-300">マイルストーンごとのご請求で無駄なコストを排除。UIだけの依頼も大歓迎です。</p>
+                    </div>
+                    
+                    <!-- 強みカード 5 --><div class="glass-card p-8 rounded-2xl border-purple-500/30 border col-span-1 md:col-span-2 lg:col-span-1">
+                        <h3 class="text-gradient text-6xl font-extrabold mb-4">12+<span class="text-3xl ml-2">years</span></h3>
+                        <h4 class="text-2xl font-bold text-white mb-3">豊富な経験値</h4>
+                        <p class="text-gray-300">IT/DX/AI業界での合計12年以上の経験が、あなたの成功を強力に支えます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ===== 4. 制作実績 ===== --><section id="works" class="py-20 md:py-32 px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">
+                    未来のスタンダードを、<span class="text-gradient">ここから。</span>
+                </h2>
+                
+                <div class="space-y-20">
+                    <!-- 実績 1 --><div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                        <div class="glass-card p-6 md:p-10 rounded-3xl overflow-hidden">
+                            <!-- プレースホルダー画像 --><div class="w-full h-80 bg-gray-700/50 rounded-2xl flex items-center justify-center">
+                                <span class="text-gray-400 text-lg">[AI SaaS 管理画面モックアップ]</span>
+                            </div>
+                        </div>
+                        <div class="md:order-first">
+                            <span class="text-electric-blue font-semibold">AI / SaaS</span>
+                            <h3 class="text-3xl font-bold text-white my-4">AI業務効率化SaaS</h3>
+                            <p class="text-gray-300 text-lg leading-relaxed">
+                                複雑なAIの機能を、誰でも直感的に使えるUI/UXに落とし込みました。
+                                専門知識不要の操作性を実現し、導入企業の生産性を劇的に改善します。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- 実績 2 --><div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                        <div class="glass-card p-6 md:p-10 rounded-3xl overflow-hidden">
+                            <!-- プレースホルダー画像 --><div class="w-full h-80 bg-gray-700/50 rounded-2xl flex items-center justify-center">
+                                <span class="text-gray-400 text-lg">[ソーシャルコマース アプリ]</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-cyber-purple font-semibold">Mobile App / Social</span>
+                            <h3 class="text-3xl font-bold text-white my-4">Z世代向けソーシャルコマース</h3>
+                            <p class="text-gray-300 text-lg leading-relaxed">
+                                「発見」と「共感」をテーマにしたアプリデザイン。
+                                スクロールするだけでワクワクするような体験と、シームレスな購入フローを両立させました。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 5. ご利用の流れ ===== --><section id="flow" class="py-20 md:py-32 px-4">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-20">
+                    アイデアが<span class="text-gradient">形になるまで</span>
+                </h2>
+                
+                <div class="relative flex flex-col md:flex-row justify-between md:space-x-8">
+                    <!-- 背景の線（PC） --><div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-purple-500/50 to-blue-500/50" style="transform: translateY(-50%); z-index: -1;"></div>
+
+                    <!-- ステップ 1 --><div class="flex flex-col md:items-center text-center md:text-left mb-8 md:mb-0 md:flex-1 relative">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg mb-4 mx-auto md:mx-0">
+                            01
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">ヒアリング</h3>
+                        <p class="text-gray-300">まずはあなたの情熱や課題を、お聞かせください。雑談からで構いません。</p>
+                    </div>
+                    
+                    <!-- ステップ 2 --><div class="flex flex-col md:items-center text-center md:text-left mb-8 md:mb-0 md:flex-1 relative">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg mb-4 mx-auto md:mx-0">
+                            02
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">UI/UXデザイン</h3>
+                        <p class="text-gray-300">ヒアリング内容を基に、最短2週間でFigmaでデザインを構築します。</p>
+                    </div>
+                    
+                    <!-- ステップ 3 --><div class="flex flex-col md:items-center text-center md:text-left mb-8 md:mb-0 md:flex-1 relative">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg mb-4 mx-auto md:mx-0">
+                            03
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">フィードバック</h3>
+                        <p class="text-gray-300">デザインをご確認いただき、修正。一緒にブラッシュアップします。</p>
+                    </div>
+                    
+                    <!-- ステップ 4 --><div class="flex flex-col md:items-center text-center md:text-left md:flex-1 relative">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg mb-4 mx-auto md:mx-0">
+                            04
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">納品 & 開発</h3>
+                        <p class="text-gray-300">デザインデータを納品。ご希望があればそのまま開発フェーズへ移行します。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 6. よくある質問 (FAQ) ===== --><section id="faq" class="py-20 md:py-32 px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">
+                    よくある<span class="text-gradient">ご質問</span>
+                </h2>
+                
+                <div class="space-y-6">
+                    <!-- 質問 1 --><div class="glass-card rounded-xl overflow-hidden">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-semibold text-white">本当にざっくりとしたアイデアでも大丈夫ですか？</span>
+                            <svg class="w-6 h-6 text-electric-blue transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-6 pb-6">
+                            <p class="text-gray-300 leading-relaxed">
+                                はい、もちろんです。「こんなことができたらいいな」というレベルからで全く問題ありません。XQxerの専門コンサルタントが壁打ち相手となり、アイデアを深掘りし、具体的なUI/UXデザインに落とし込むお手伝いをします。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- 質問 2 --><div class="glass-card rounded-xl overflow-hidden">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-semibold text-white">修正は何回まで可能ですか？</span>
+                            <svg class="w-6 h-6 text-electric-blue transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-6 pb-6">
+                            <p class="text-gray-300 leading-relaxed">
+                                プランによって異なりますが、スタンダードプランではデザインの主要な方向性を決める段階で2回、詳細デザインの段階で2回の計4回の修正レビューを設けております。お客様が100%ご納得いただけるまで、柔軟に対応いたします。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- 質問 3 --><div class="glass-card rounded-xl overflow-hidden">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-semibold text-white">開発もお願いする場合の費用感を教えてください。</span>
+                            <svg class="w-6 h-6 text-electric-blue transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer px-6 pb-6">
+                            <p class="text-gray-300 leading-relaxed">
+                                開発費用は、必要な機能、使用する技術、規模によって大きく変動します。デザインがFIXした段階で、詳細な開発要件をヒアリングさせていただき、無料でお見積もりを作成いたします。お気軽にご相談ください。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 7. ラストCTA ===== --><section id="contact" class="py-20 md:py-32 px-4 relative">
+            <!-- 背景グラフィック --><div class="absolute top-0 left-0 w-full h-full opacity-30 overflow-hidden">
+                <div class="hero-bg-graphic" style="top: 10%; left: 50%; width: 800px; height: 800px;"></div>
+            </div>
+
+            <div class="max-w-3xl mx-auto text-center relative z-10">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
+                    次は、あなたのアイデアで<br>
+                    <span class="text-gradient">世界を驚かせる番です。</span>
+                </h2>
+                <p class="text-lg md:text-xl text-gray-300 mb-12 max-w-xl mx-auto">
+                    私たちXQxerが、その最初の設計図を描きます。<br>
+                    まずは30分、あなたのアイデアを聞かせてください。
+                </p>
+
+                <!-- 簡易フォーム --><div class="glass-card p-8 md:p-12 rounded-2xl w-full max-w-2xl mx-auto">
+                    <form action="#" method="POST" class="space-y-6 text-left">
+                        <div>
+                            <label for="company" class="block text-sm font-medium text-gray-300 mb-2">貴社名</label>
+                            <input type="text" name="company" id="company" class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-electric-blue" placeholder="株式会社XQxer">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">メールアドレス</label>
+                            <input type="email" name="email" id="email" required class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-electric-blue" placeholder="hello@xqxer.jp">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">ご相談内容（任意）</label>
+                            <textarea name="message" id="message" rows="4" class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-electric-blue" placeholder="新規事業のアプリデザインについて相談したい..."></textarea>
+                        </div>
+                        <div class="text-center pt-4">
+                            <button type="submit" class="w-full sm:w-auto px-12 py-4 rounded-full text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all transform hover:scale-105 shadow-2xl shadow-purple-500/40">
+                                30分無料で相談する
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== フッター ===== --><footer class="py-12 px-4 border-t border-white/10 mt-20">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div class="mb-4 md:mb-0">
+                <!-- ロゴ --><a href="#" class="flex items-center justify-center md:justify-start space-x-2 mb-2">
+                    <svg width="24" height="24" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4L32 32M4 32L32 4" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round"/>
+                        <circle cx="18" cy="18" r="10" stroke="url(#logoGrad2)" stroke-width="2"/>
+                        <path d="M24 24L26 26" stroke="url(#logoGrad2)" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M18 8V28M8 18H28" stroke="url(#logoGrad2)" stroke-width="1" stroke-dasharray="2 2" opacity="0.7"/>
+                    </svg>
+                    <span class="font-bold text-xl text-white tracking-wider">XQxer</span>
+                </a>
+                <p class="text-gray-400 text-sm">© 2025 XQxer Inc. All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6 text-gray-400">
+                <a href="#" class="hover:text-electric-blue transition-colors">運営会社</a>
+                <a href="#" class="hover:text-electric-blue transition-colors">プライバシーポリシー</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // --- モバイルメニュー ---
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- FAQ アコーディオン ---
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('svg');
+
+                if (answer.style.maxHeight) {
+                    // 閉じる
+                    answer.style.maxHeight = null;
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    // 開く
+                    // 他の開いている項目を閉じる
+                    document.querySelectorAll('.faq-answer').forEach(ans => {
+                        if (ans.style.maxHeight) {
+                            ans.style.maxHeight = null;
+                            ans.previousElementSibling.querySelector('svg').style.transform = 'rotate(0deg)';
+                        }
+                    });
+                    
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
